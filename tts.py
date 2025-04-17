@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-import os,threading,subprocess
-import time
+import os
+import subprocess
 
 import edge_tts
 import asyncio
@@ -12,7 +12,8 @@ rate = int((float(os.sys.argv[3])-1)*100)
 communicate = edge_tts.Communicate(text, voice, rate="+"+str(rate)+"%")
 
 async def stream_audio():
-    ffplay = subprocess.Popen(["ffplay", "-i", "-", "-autoexit"],
+    ffplay = subprocess.Popen(
+        ["ffplay", "-i", "-", "-autoexit", "-nodisp", "-nostats"],
                               stdin=subprocess.PIPE, start_new_session=True,
                               stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
     async for chunk in communicate.stream():
